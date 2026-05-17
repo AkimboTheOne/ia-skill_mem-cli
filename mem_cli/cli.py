@@ -29,19 +29,19 @@ def with_schema(command: str, payload: dict) -> dict:
 def render_tty(obj: dict) -> str:
     command = obj.get("command", "mem-cli")
     if command == "init":
-        return f"initialized vault: {obj.get('vault')}"
+        return f"bóveda inicializada: {obj.get('vault')}"
     if command == "add":
-        return f"added {obj.get('count', 0)} item(s) to {obj.get('vault')}" + (
-            f"; missing {len(obj.get('missing', []))}" if obj.get("missing") else ""
+        return f"agregados {obj.get('count', 0)} elemento(s) en {obj.get('vault')}" + (
+            f"; faltantes {len(obj.get('missing', []))}" if obj.get("missing") else ""
         )
     if command == "index":
-        return f"indexed {obj.get('captures_indexed', 0)} capture(s) in {obj.get('vault')}"
+        return f"indexadas {obj.get('captures_indexed', 0)} captura(s) en {obj.get('vault')}"
     if command == "connect":
-        return f"found {obj.get('connections_count', 0)} connection(s) in {obj.get('vault')}"
+        return f"encontradas {obj.get('connections_count', 0)} conexión(es) en {obj.get('vault')}"
     if command == "brief":
-        return f"brief saved for topic: {obj.get('topic')}"
+        return f"brief guardado para el tema: {obj.get('topic')}"
     if command == "status":
-        return f"vault={obj.get('vault')} exists={obj.get('exists')}"
+        return f"bóveda={obj.get('vault')} existe={obj.get('exists')}"
     return json.dumps(obj, ensure_ascii=True, indent=2)
 
 
@@ -62,7 +62,7 @@ def cmd_init(args: argparse.Namespace) -> int:
 def cmd_add(args: argparse.Namespace) -> int:
     vault = Path(args.vault).expanduser().resolve()
     if not vault.exists():
-        return emit(with_schema("add", {"error": "vault not found", "vault": str(vault)}), 1)
+        return emit(with_schema("add", {"error": "bóveda no encontrada", "vault": str(vault)}), 1)
     ensure_layout(vault)
     requested = [Path(p).expanduser().resolve() for p in args.paths]
     missing = [str(p) for p in requested if not p.exists()]
@@ -114,7 +114,7 @@ def cmd_add(args: argparse.Namespace) -> int:
 def cmd_index(args: argparse.Namespace) -> int:
     root = Path(args.vault).expanduser().resolve()
     if not root.exists():
-        return emit(with_schema("index", {"error": "vault not found", "vault": str(root)}), 1)
+        return emit(with_schema("index", {"error": "bóveda no encontrada", "vault": str(root)}), 1)
     ensure_layout(root)
     captures = collect_captures(root)
     duplicates = collect_duplicates(captures)
@@ -136,7 +136,7 @@ def cmd_index(args: argparse.Namespace) -> int:
 def cmd_connect(args: argparse.Namespace) -> int:
     root = Path(args.vault).expanduser().resolve()
     if not root.exists():
-        return emit(with_schema("connect", {"error": "vault not found", "vault": str(root)}), 1)
+        return emit(with_schema("connect", {"error": "bóveda no encontrada", "vault": str(root)}), 1)
     ensure_layout(root)
     days = max(args.days, 0)
     captures = collect_captures(root)
@@ -165,7 +165,7 @@ def cmd_connect(args: argparse.Namespace) -> int:
 def cmd_brief(args: argparse.Namespace) -> int:
     root = Path(args.vault).expanduser().resolve()
     if not root.exists():
-        return emit(with_schema("brief", {"error": "vault not found", "vault": str(root)}), 1)
+        return emit(with_schema("brief", {"error": "bóveda no encontrada", "vault": str(root)}), 1)
     ensure_layout(root)
     topic = args.topic.strip()
     proof = [item for item in args.proof] if args.proof else []
@@ -174,7 +174,7 @@ def cmd_brief(args: argparse.Namespace) -> int:
         {
             "vault": str(root),
             "topic": topic,
-            "one_thing": args.one_thing or f"Brief for {topic}",
+            "one_thing": args.one_thing or f"Brief para {topic}",
             "proof": proof,
             "reader_transformation": args.reader_transformation or "Sintetizar patrones accionables",
             "three_hooks": args.three_hooks or [],
@@ -204,29 +204,29 @@ def cmd_status(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="mem-cli")
+    parser = argparse.ArgumentParser(prog="mem-cli", description="CLI local de memoria de proyecto.")
     parser.add_argument("--format", choices=["json", "tty"], default="json")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_init = sub.add_parser("init")
+    p_init = sub.add_parser("init", help="Inicializar la bóveda.")
     p_init.add_argument("--vault", required=True)
     p_init.set_defaults(func=cmd_init)
 
-    p_add = sub.add_parser("add")
+    p_add = sub.add_parser("add", help="Agregar archivos o carpetas a la bóveda.")
     p_add.add_argument("paths", nargs="+")
     p_add.add_argument("--vault", required=True)
     p_add.set_defaults(func=cmd_add)
 
-    p_index = sub.add_parser("index")
+    p_index = sub.add_parser("index", help="Indexar capturas normalizadas.")
     p_index.add_argument("--vault", required=True)
     p_index.set_defaults(func=cmd_index)
 
-    p_connect = sub.add_parser("connect")
+    p_connect = sub.add_parser("connect", help="Derivar conexiones heurísticas.")
     p_connect.add_argument("--vault", required=True)
     p_connect.add_argument("--days", type=int, default=7)
     p_connect.set_defaults(func=cmd_connect)
 
-    p_brief = sub.add_parser("brief")
+    p_brief = sub.add_parser("brief", help="Generar un brief temático.")
     p_brief.add_argument("--vault", required=True)
     p_brief.add_argument("--topic", required=True)
     p_brief.add_argument("--one-thing")
@@ -236,7 +236,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_brief.add_argument("--three-closers", action="append")
     p_brief.set_defaults(func=cmd_brief)
 
-    p_status = sub.add_parser("status")
+    p_status = sub.add_parser("status", help="Reportar el estado de la bóveda.")
     p_status.add_argument("--vault", required=True)
     p_status.set_defaults(func=cmd_status)
     return parser

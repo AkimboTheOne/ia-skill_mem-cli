@@ -1,14 +1,18 @@
-# Output Schemas
+# Esquemas de Salida
 
-`schema_version: 1` is required on every JSON payload emitted by `mem-cli`.
+`schema_version: 1` es obligatorio en todo payload JSON emitido por `mem-cli`.
 
-## Common Fields
+## Regla de idioma
 
-- `schema_version`: integer schema version.
-- `command`: command name.
-- `vault`: resolved vault path when the command operates on a vault.
+Escribe en español el texto humano de esta documentación. Conserva en inglés solo los identificadores técnicos que formen parte del contrato.
 
-## Command-Specific Fields
+## Campos Comunes
+
+- `schema_version`: versión entera del esquema.
+- `command`: nombre del comando.
+- `vault`: ruta de bóveda resuelta cuando el comando opera sobre una bóveda.
+
+## Campos Específicos por Comando
 
 - `init`: `created`
 - `add`: `requested`, `added`, `missing`, `count`
@@ -17,3 +21,6 @@
 - `brief`: `topic`, `one_thing`, `proof`, `reader_transformation`, `three_hooks`, `three_closers`, `status`
 - `status`: `exists`, `layout`, `artifacts`
 
+## Regla de Contrato
+
+No agregues ni elimines campos sin actualizar en el mismo cambio el contrato de comandos, el contrato de comportamiento y los ejemplos canónicos.

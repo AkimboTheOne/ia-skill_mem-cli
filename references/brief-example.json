@@ -1,6 +1,6 @@
 {
   "topic": "refactor patterns",
-  "one_thing": "Duplicated code detected across modules",
+  "one_thing": "Código duplicado detectado entre módulos",
   "proof": [
     "module_a.py: lines 12-30",
     "module_b.py: lines 5-25"
@@ -17,4 +17,3 @@
     "Plan de integración"
   ]
 }
-

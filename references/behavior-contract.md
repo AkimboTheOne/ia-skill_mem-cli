@@ -1,32 +1,36 @@
-# Behavior Contract
+# Contrato de Comportamiento
 
-This repository uses `schema_version: 1` for all machine-readable outputs.
+Este repositorio usa `schema_version: 1` para todas las salidas legibles por máquina.
 
-## Global Rules
+## Regla de idioma
 
-- Output is JSON by default.
-- `--format tty` produces stable, human-readable text.
-- Commands are deterministic for the same inputs.
-- Vault writes are confined to the requested vault and its managed subdirectories.
-- Markdown ingestion normalizes frontmatter but preserves explicit semantic fields when present.
+Escribe en español el texto humano de esta documentación. Conserva en inglés solo los identificadores técnicos que formen parte del contrato.
 
-## Ingestion Rules
+## Reglas Globales
 
-- Markdown files go to `01-CAPTURES/`.
-- Non-Markdown files go to `00-INBOX/`.
-- Missing paths are reported and do not stop valid inputs from being processed.
-- Identical ingests are deduplicated by content hash at the destination.
-- Existing frontmatter keys outside the allowed set are reported as warnings.
+- La salida es JSON por defecto.
+- `--format tty` produce texto estable y legible por humanos.
+- Los comandos son deterministas para las mismas entradas.
+- Las escrituras en la bóveda se limitan a la bóveda solicitada y a sus subdirectorios administrados.
+- La ingesta de Markdown normaliza el frontmatter pero preserva los campos semánticos explícitos cuando están presentes.
 
-## Index Rules
+## Reglas de Ingesta
 
-- `index` reads normalized captures from `01-CAPTURES/`.
-- Duplicate captures are reported when they share the same semantic fingerprint.
-- Index results are persisted to `.tmp/index.json`.
+- Los archivos Markdown van a `01-CAPTURES/`.
+- Los archivos que no son Markdown van a `00-INBOX/`.
+- Las rutas faltantes se reportan y no impiden procesar las entradas válidas.
+- Las ingestas idénticas se deduplican por hash de contenido en el destino.
+- Las claves existentes de frontmatter fuera del conjunto permitido se reportan como advertencias.
 
-## Brief Rules
+## Reglas de Indexación
 
-- `brief` writes its artifact to `03-BRIEFS/` and `.tmp/brief.json`.
-- The filename is derived from the topic slug.
-- The payload must include the topic and the canonical brief fields.
+- `index` lee capturas normalizadas desde `01-CAPTURES/`.
+- Las capturas duplicadas se reportan cuando comparten la misma huella semántica.
+- Los resultados de indexación se guardan en `.tmp/index.json`.
 
+## Reglas de Brief
+
+- `brief` escribe su artefacto en `03-BRIEFS/` y `.tmp/brief.json`.
+- El nombre del archivo se deriva del slug del tema.
+- El payload debe incluir el tema y los campos canónicos del brief.
+- Los artefactos generados de conexiones y briefs son borradores hasta que los revise un humano o el LLM.

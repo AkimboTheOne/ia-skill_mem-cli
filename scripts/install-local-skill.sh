@@ -14,7 +14,7 @@ copy_if_changed() {
   fi
 }
 
-copy_if_changed "$repo_root/20260517_mem-cli_SKILL.md" "$target_dir/20260517_mem-cli_SKILL.md"
+copy_if_changed "$repo_root/SKILL.md" "$target_dir/SKILL.md"
 copy_if_changed "$repo_root/README.md" "$target_dir/README.md"
 copy_if_changed "$repo_root/AGENTS.md" "$target_dir/AGENTS.md"
 mkdir -p "$target_dir/bin"

@@ -1,6 +1,6 @@
-# Command Contract
+# Contrato de Comandos
 
-Canonical command surface for the baseline implementation:
+Superficie canónica de comandos:
 
 ```text
 mem-cli init --vault <path>
@@ -11,10 +11,9 @@ mem-cli brief --vault <path> --topic <text>
 mem-cli status --vault <path>
 ```
 
-## Required Behaviors
+## Comportamientos Requeridos
 
-- Commands must be deterministic for the same inputs.
-- Commands must prefer structured JSON output.
-- Commands must not mutate outside the vault or explicit input paths.
-- Commands must keep `.tmp/` ephemeral.
-
+- Los comandos deben ser deterministas para las mismas entradas.
+- Los comandos deben emitir JSON por defecto.
+- Los comandos no deben mutar fuera de la bóveda o de las rutas de entrada explícitas.
+- Los comandos deben mantener `.tmp/` como efímero.

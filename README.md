@@ -1,20 +1,14 @@
 # ia-skill_mem-cli
-`$mem-cli` es un skill local diseñado para operar una memoria local de proyecto, capturando archivos, indexando relaciones, generando conexiones y briefs. La inteligencia permanece delegada al LLM.
+`mem-cli` es un skill local de memoria de proyecto para capturar, indexar, redactar conexiones, redactar briefs e inspeccionar la bóveda de forma determinista. Mantén la CLI local-first y JSON-first; conserva la síntesis en el LLM después del procesamiento local.
 
-## Baseline
+## Contrato
 
-This repo now includes the baseline contract and supporting docs for the skill.
+- Guía del skill: `SKILL.md`
+- Guía para agentes: `AGENTS.md`
+- Contratos y ejemplos estables: `references/`
+- Documentación humana: `docs/`
 
-- Skill spec: `20260517_mem-cli_SKILL.md`
-- Future agent guidance: `AGENTS.md`
-- Installation helper: `scripts/install-local-skill.sh`
-- Vault bootstrap helper: `scripts/bootstrap-vault.sh`
-- CLI executable: `bin/mem-cli`
-- Docs: `docs/`
-- Stable examples and contracts: `references/`
-- Contract docs: `references/output-schemas.md` and `references/behavior-contract.md`
-
-## Local Setup
+## Instalación Local
 
 ```bash
 bash scripts/install-local-skill.sh

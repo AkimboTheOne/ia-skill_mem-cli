@@ -1,25 +1,25 @@
-# Contracts
+# Contratos
 
-This file captures the baseline command contract for the skill.
+Este archivo es un resumen corto para humanos. El contrato autoritativo vive en `SKILL.md` y `references/`.
 
-## Commands
+## Comandos
 
-- `init`: create the vault directory layout.
-- `add`: capture files or folders into the vault workflow.
-- `index`: index files or a vault tree.
-- `connect`: derive heuristic links from captured content.
-- `brief`: generate a topic brief from prepared content.
-- `status`: report vault health and inventory.
+- `init`: crea el layout de directorios de la bóveda.
+- `add`: captura archivos o carpetas dentro del flujo de la bóveda.
+- `index`: indexa archivos o un árbol de bóveda.
+- `connect`: deriva enlaces heurísticos a partir del contenido capturado.
+- `brief`: genera un resumen temático a partir del contenido preparado.
+- `status`: reporta la salud e inventario de la bóveda.
 
-## Output Policy
+## Política de Salida
 
-- Primary machine output should be JSON.
-- Human TTY output may be readable text, but it must reflect the same underlying data.
-- Failures should be explicit and structured where possible.
+- La salida principal legible por máquina debe ser JSON.
+- La salida TTY para humanos puede ser texto legible, pero debe reflejar los mismos datos subyacentes.
+- Los fallos deben ser explícitos y estructurados cuando sea posible.
 
 ## Frontmatter
 
-Captured markdown files should preserve a YAML frontmatter block with fields like:
+Los archivos Markdown capturados deben preservar un bloque de frontmatter YAML con campos como:
 
 ```yaml
 ---
@@ -32,3 +32,4 @@ source_file: path/to/file
 ---
 ```
 
+Consulta `references/frontmatter-example.md` para la forma canónica.

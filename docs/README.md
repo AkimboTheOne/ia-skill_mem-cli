@@ -1,9 +1,10 @@
-# Documentation Index
+# Índice de Documentación
 
-This folder holds the human-readable reference material for `mem-cli`.
+Esta carpeta contiene documentación de apoyo legible por humanos para `mem-cli`.
 
-Current baseline docs:
-- `architecture.md`: baseline design and responsibility split between deterministic CLI work and LLM-assisted synthesis.
-- `workflow.md`: recommended end-to-end usage flow for local vault operations.
-- `contracts.md`: canonical command contract and output expectations.
+El contrato vive en `SKILL.md` y `references/`. Usa estos documentos solo como orientación, no como fuente de verdad.
 
+Documentos actuales:
+- `architecture.md`: roles y fronteras del sistema
+- `workflow.md`: secuencia de uso recomendada
+- `contracts.md`: resumen corto del contrato y ejemplos

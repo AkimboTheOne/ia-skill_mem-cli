@@ -3,11 +3,10 @@ created: 2026-05-17T12:00:00Z
 type: capture
 status: new
 source: local
-tags: [baseline, mem-cli]
+tags: [mem-cli]
 source_file: src/example.md
 ---
 
-# Example Capture
+# Ejemplo de Captura
 
-This is a canonical example capture used by the baseline documentation.
-
+Ejemplo canónico de captura.
