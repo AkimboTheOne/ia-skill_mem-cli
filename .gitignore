@@ -1,0 +1,8 @@
+.tmp/
+mem-cli-vault/
+*.swp
+*.swo
+*.bak
+__pycache__/
+*.pyc
+.DS_Store
