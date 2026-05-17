@@ -1,0 +1,20 @@
+{
+  "topic": "refactor patterns",
+  "one_thing": "Duplicated code detected across modules",
+  "proof": [
+    "module_a.py: lines 12-30",
+    "module_b.py: lines 5-25"
+  ],
+  "reader_transformation": "Identificar oportunidades de refactor para DRY",
+  "three_hooks": [
+    "Duplicación evidente",
+    "Impacto en mantenibilidad",
+    "Posible automatización"
+  ],
+  "three_closers": [
+    "Priorizar módulos críticos",
+    "Revisar pruebas unitarias",
+    "Plan de integración"
+  ]
+}
+
