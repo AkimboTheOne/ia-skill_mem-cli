@@ -47,6 +47,13 @@ def write_capture(path: Path, *, created: str, tags: list[str], source_file: str
     )
 
 
+def write_markdown(path: Path, title: str, body: str = "") -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    text = f"# {title}\n"
+    if body:
+        text += f"\n{body.rstrip()}\n"
+    path.write_text(text, encoding="utf-8")
+
+
 def load_json(stdout: str) -> dict:
     return json.loads(stdout)
-

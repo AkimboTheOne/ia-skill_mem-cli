@@ -79,14 +79,21 @@ def cmd_add(args: argparse.Namespace) -> int:
                         extras = validate_frontmatter(frontmatter)
                         if extras:
                             warnings.append({"path": str(file_path), "unknown_keys": extras})
-                    added.append(ingest_file(vault, file_path))
+                    relative_path = file_path.relative_to(source)
+                    added_path, collided = ingest_file(vault, file_path, relative_path)
+                    added.append(added_path)
+                    if collided:
+                        warnings.append({"path": str(file_path), "collision_resolved_to": added_path})
         else:
             if source.suffix.lower() in {".md", ".markdown"}:
                 frontmatter = parse_frontmatter(source.read_text(encoding="utf-8"))
                 extras = validate_frontmatter(frontmatter)
                 if extras:
                     warnings.append({"path": str(source), "unknown_keys": extras})
-            added.append(ingest_file(vault, source))
+            added_path, collided = ingest_file(vault, source)
+            added.append(added_path)
+            if collided:
+                warnings.append({"path": str(source), "collision_resolved_to": added_path})
     return emit(
         with_schema(
             "add",
@@ -241,4 +248,3 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     OUTPUT_FORMAT = args.format
     return args.func(args)
-

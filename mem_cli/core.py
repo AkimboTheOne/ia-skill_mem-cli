@@ -133,16 +133,36 @@ def file_digest(path: Path) -> str:
     return digest.hexdigest()
 
 
+def short_hash(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()[:8]
+
+
 def build_frontmatter(source_file: Path, kind: str = "capture") -> str:
     return serialize_frontmatter(normalize_frontmatter({}, source_file, kind))
 
 
-def ingest_file(vault: Path, source: Path) -> str:
+def destination_path(vault: Path, source: Path, relative_path: Path | None = None) -> Path:
     target_root = vault / ("01-CAPTURES" if source.suffix.lower() in {".md", ".markdown"} else "00-INBOX")
-    destination = target_root / source.name
+    rel = relative_path if relative_path is not None else Path(source.name)
+    return target_root / rel
+
+
+def unique_destination(destination: Path, source: Path) -> tuple[Path, bool]:
+    if not destination.exists():
+        return destination, False
+    if file_digest(destination) == file_digest(source):
+        return destination, False
+    suffix = short_hash(str(source))
+    renamed = destination.with_name(f"{destination.stem}__{suffix}{destination.suffix}")
+    return renamed, True
+
+
+def ingest_file(vault: Path, source: Path, relative_path: Path | None = None) -> tuple[str, bool]:
+    target_root = vault / ("01-CAPTURES" if source.suffix.lower() in {".md", ".markdown"} else "00-INBOX")
+    destination = destination_path(vault, source, relative_path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    if destination.exists() and file_digest(destination) == file_digest(source):
-        return str(destination)
+    destination, collided = unique_destination(destination, source)
+    destination.parent.mkdir(parents=True, exist_ok=True)
     if source.suffix.lower() in {".md", ".markdown"}:
         text = source.read_text(encoding="utf-8")
         body = text
@@ -155,7 +175,7 @@ def ingest_file(vault: Path, source: Path) -> str:
         destination.write_text(serialize_frontmatter(normalized) + body.lstrip("\n"), encoding="utf-8")
     else:
         shutil.copy2(source, destination)
-    return str(destination)
+    return str(destination), collided
 
 
 def collect_captures(vault: Path) -> list[dict]:
@@ -204,4 +224,3 @@ def collect_duplicates(captures: list[dict]) -> list[dict]:
             }
         )
     return duplicates
-

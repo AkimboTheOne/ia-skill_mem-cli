@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import unittest
 
-from tests.helpers import REPO_ROOT, load_json, new_vault, run_cli, write_capture
+from tests.helpers import REPO_ROOT, load_json, new_vault, run_cli, write_capture, write_markdown
 from mem_cli.api import SCHEMA_VERSION, VAULT_LAYOUT, ensure_layout
 
 
@@ -181,6 +181,26 @@ custom: value
             self.assertEqual(payload["count"], 1)
             copied = vault / "01-CAPTURES" / "note.md"
             self.assertTrue(copied.exists())
+
+    def test_add_preserves_relative_paths_for_directories(self) -> None:
+        tmp, vault = new_vault()
+        with tmp:
+            root = Path(tmp.name)
+            vault = root / "vault"
+            run_cli("init", "--vault", str(vault))
+            source = root / "input"
+            write_markdown(source / "a" / "readme.md", "A")
+            write_markdown(source / "b" / "readme.md", "B")
+            proc = run_cli("add", "--vault", str(vault), str(source))
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            payload = load_json(proc.stdout)
+            self.assertEqual(payload["schema_version"], 1)
+            self.assertEqual(payload["count"], 2)
+            first = vault / "01-CAPTURES" / "a" / "readme.md"
+            second = vault / "01-CAPTURES" / "b" / "readme.md"
+            self.assertTrue(first.exists())
+            self.assertTrue(second.exists())
+            self.assertNotEqual(first.read_text(encoding="utf-8"), second.read_text(encoding="utf-8"))
 
     def test_brief_returns_draft_json(self) -> None:
         tmp, vault = new_vault()
